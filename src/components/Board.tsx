@@ -1,16 +1,23 @@
-import { useState } from "react";
-import Square from "./Square";
-import calculateWinner from "../utils/calculateWinner";
+import React, { useState } from "react";
+import Square from "./Square.tsx";
+import calculateWinner from "../utils/calculateWinner.ts";
 
-export default function Board({ xIsNext, squares, onPlay }) {
+interface Props {
+  xIsNext: boolean;
+  squares: string[];
+  onPlay: (squares: string[]) => void;
+}
+
+export default function Board({ xIsNext, squares, onPlay }: Props) {
     const [isOver, setIsOver] = useState(false);
-    const [winnerSquares, setWinnerSquares] = useState(Array(9).fill(false));
+  const [winnerSquares, setWinnerSquares] = useState(Array(9).fill(false));
 
-    function handleClick(i){
-        if(squares[i] || winner) return;
-        const nextSquares = squares.slice();
-        nextSquares[i] = xIsNext ? "X" : "O";
-        onPlay(nextSquares);
+
+    function handleClick(i: number) {
+      if (squares[i] || winner) return;
+      const nextSquares = squares.slice();
+      nextSquares[i] = xIsNext ? "X" : "O";
+      onPlay(nextSquares);
     }
   
     const winner = calculateWinner(squares);
@@ -21,7 +28,6 @@ export default function Board({ xIsNext, squares, onPlay }) {
         winner.line.forEach(index => {
             winnerCopy[index] = true;
         })
-        alert(winnerCopy)
         setWinnerSquares(winnerCopy);
         setIsOver(true);
     }
